@@ -9,3 +9,6 @@ docker build -t couldworks/jenkins:1.651.3 .
 
 #Imagem node
 docker build -t couldworks/nodejs:6.2.0 .
+
+#Imagem Mongo
+docker build -t couldworks/mongodb:3.2.4 .
