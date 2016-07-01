@@ -6,7 +6,7 @@ chai.use(chaiHttp)
 
 export default (done) =>
 {
-    chai.request('http://localhost:3000')
+    chai.request(server)
       .get('/')
       .end(function(err, res)
       {

@@ -1,21 +1,38 @@
 import Hapi from 'hapi'
+import inert from 'inert'
+
 const server = new Hapi.Server()
+
 server.connection({ port: 3000 })
 
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-       reply();
-     }
-})
+server.register(inert, function (err) {
 
-server.start((err) => {
+  server.route({
+      method: 'GET',
+      path: '/{filter}',
+      handler: function (request, reply) {
+         reply();
+       }
+  })
 
-    if (err) {
-        throw err;
+  server.route({
+      method: 'GET',
+      path: '/{param*}',
+      handler: {
+        directory: {
+          path: '../public',
+          listing: true
+        }
+      }
     }
-    console.log('Server running at:', server.info.uri)
+  )
+  server.start((err) => {
+
+      if (err) {
+          throw err;
+      }
+      console.log('Server running at:', server.info.uri)
+  })
 })
 
 export default server
