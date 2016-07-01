@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "nodemon --exec ./node_modules/.bin/babel-node src/index.js --presetses2015,stage-2",
-    "start" : "node dist/index.js",
+    "start": "node dist/index.js",
     "prestart": "./node_modules/.bin/babel src --out-dir dist",
     "test": "./node_modules/.bin/mocha --compilers js:babel-core/register ./tests/*.js"
   },
@@ -48,6 +48,7 @@
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "mocha": "^2.5.3",
+    "node-uuid": "^1.4.7",
     "nodemon": "^1.9.2"
   }
 }

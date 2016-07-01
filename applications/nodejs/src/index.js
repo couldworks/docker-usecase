@@ -1,5 +1,6 @@
 import Hapi from 'hapi'
 import inert from 'inert'
+import Query from './query'
 
 const server = new Hapi.Server()
 
@@ -9,8 +10,35 @@ server.register(inert, function (err) {
 
   server.route({
       method: 'GET',
-      path: '/api',
+      path: '/api/{filter?}',
       handler: function (request, reply) {
+         reply(Query.getAll());
+       }
+  })
+
+  server.route({
+      method: 'POST',
+      path: '/api/',
+      handler: function (request, reply) {
+         Query.create(request.payload)
+         reply();
+       }
+  })
+
+  server.route({
+      method: 'PUT',
+      path: '/api/',
+      handler: function (request, reply) {
+        Query.update(request.payload)
+        reply();
+       }
+  })
+
+  server.route({
+      method: 'DELETE',
+      path: '/api/',
+      handler: function (request, reply) {
+        Query.delete(request.payload)
          reply();
        }
   })
