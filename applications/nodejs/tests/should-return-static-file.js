@@ -7,10 +7,11 @@ chai.use(chaiHttp)
 export default (done) =>
 {
     chai.request(server.info.uri)
-      .get('/')
+      .get('/index.html')
       .end(function(err, res)
       {
           expect(res).to.have.status(200)
+          expect(res).to.be.html
           done()
       }
   )

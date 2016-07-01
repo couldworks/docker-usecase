@@ -3,29 +3,31 @@ import inert from 'inert'
 
 const server = new Hapi.Server()
 
-server.connection({ port: 3000 })
+server.connection({ port: 3000, host:'localhost' })
 
 server.register(inert, function (err) {
 
   server.route({
       method: 'GET',
-      path: '/{filter}',
+      path: '/api',
       handler: function (request, reply) {
          reply();
        }
   })
 
   server.route({
-      method: 'GET',
-      path: '/{param*}',
-      handler: {
-        directory: {
-          path: '../public',
-          listing: true
-        }
+    method: 'GET',
+    path: '/{param*}',
+    handler: {
+      directory: {
+        path: 'public',
+        listing: true
       }
     }
+  }
   )
+
+
   server.start((err) => {
 
       if (err) {
