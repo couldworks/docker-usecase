@@ -25,5 +25,12 @@ docker run -it --rm --net=couldworks --name alpine3 couldworks/alpine-base:3.4 s
 docker run -it --rm --net=couldworks --name alpine1 couldworks/alpine-base:3.4 sh
 docker run -it --rm --net=couldworks --name alpine2 --link alpine1:alp1 couldworks/alpine-base:3.4 sh
 
+= criação de volumes nomeados
+docker create -v $(pwd)/volumes:/volumes --name volumes couldworks/alpine-base:3.4 sh
+ 
+= inicializando container com volume compartilhado
+docker run -it --rm --volumes-from volumes --name vol1 couldworks/alpine-base:3.4 sh
+docker run -it --rm --volumes-from volumes --name vol2 couldworks/alpine-base:3.4 sh
+
 Referências de comandos do módulo de rede
 - https://docs.docker.com/v1.11/engine/userguide/networking/work-with-networks/
