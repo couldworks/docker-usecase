@@ -16,4 +16,15 @@
  # verificando estrutura da rede
  docker network inspect couldworks
  
+ # iniciando vários containers na couldworks
+ docker run -it --rm --net=couldworks --name alpine1 couldworks/alpine-base:3.4 sh
+ docker run -it --rm --net=couldworks --name alpine2 couldworks/alpine-base:3.4 sh
+ docker run -it --rm --net=couldworks --name alpine3 couldworks/alpine-base:3.4 sh
  
+ # linkando dois containers agora suporta restart
+ docker run -it --rm --net=couldworks --name alpine1 couldworks/alpine-base:3.4 sh
+ docker run -it --rm --net=couldworks --name alpine2 --link alpine1:alp1 couldworks/alpine-base:3.4 sh
+
+Referências de comandos do módulo de rede
+
+https://docs.docker.com/v1.11/engine/userguide/networking/work-with-networks/
