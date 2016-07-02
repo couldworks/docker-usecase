@@ -1,3 +1,4 @@
+import { MongoClient } from 'mongodb'
 import uuid from 'node-uuid'
 
 let data = [
@@ -7,9 +8,15 @@ let data = [
      completed: false
    }
 ]
+const url = 'mongodb://localhost:27017/'
 
 class Query
 {
+
+  getUrl()
+  {
+    return url;
+  }
 
   getAll()
   {
