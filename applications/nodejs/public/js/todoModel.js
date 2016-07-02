@@ -15,9 +15,17 @@ var app = app || {};
 	// separate out parts of your application.
 	app.TodoModel = function (key) {
 		this.key = key;
-		this.todos = Utils.store(key);
+		this.todos = [];
 		this.onChanges = [];
+
+		axios.get('/api/', {}).then(response =>
+			{
+					this.todos = this.todos.concat(response.data);
+					this.inform();
+			})
+
 	};
+
 
 	app.TodoModel.prototype.subscribe = function (onChange) {
 		this.onChanges.push(onChange);
@@ -29,12 +37,14 @@ var app = app || {};
 	};
 
 	app.TodoModel.prototype.addTodo = function (title) {
-		this.todos = this.todos.concat({
+		let task = {
 			id: Utils.uuid(),
 			title: title,
 			completed: false
-		});
+		};
 
+		this.todos = this.todos.concat(task);
+		axios.post('/api/', task)
 		this.inform();
 	};
 
@@ -44,7 +54,9 @@ var app = app || {};
 		// we use map() and filter() everywhere instead of mutating the array or
 		// todo items themselves.
 		this.todos = this.todos.map(function (todo) {
-			return Utils.extend({}, todo, {completed: checked});
+			let task = Utils.extend({}, todo, {completed: checked})
+			axios.put('/api/', task)
+			return task;
 		});
 
 		this.inform();
@@ -52,15 +64,26 @@ var app = app || {};
 
 	app.TodoModel.prototype.toggle = function (todoToToggle) {
 		this.todos = this.todos.map(function (todo) {
-			return todo !== todoToToggle ?
-				todo :
-				Utils.extend({}, todo, {completed: !todo.completed});
+
+			if(todo !== todoToToggle){
+				return todo
+			}
+			else
+			{
+				let task = Utils.extend({}, todo, {completed: !todo.completed})
+				axios.put('/api/', task)
+				return task;
+			}
+
+
+
 		});
 
 		this.inform();
 	};
 
 	app.TodoModel.prototype.destroy = function (todo) {
+		axios.delete('/api/' + todo.id, {} )
 		this.todos = this.todos.filter(function (candidate) {
 			return candidate !== todo;
 		});
@@ -80,7 +103,6 @@ var app = app || {};
 		this.todos = this.todos.filter(function (todo) {
 			return !todo.completed;
 		});
-
 		this.inform();
 	};
 
