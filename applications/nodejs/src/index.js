@@ -12,7 +12,8 @@ server.register(inert, function (err) {
       method: 'GET',
       path: '/api/{filter?}',
       handler: function (request, reply) {
-         reply(Query.getAll());
+        console.log('get: ' + request.params.filter)
+         reply(Query.getAll())
        }
   })
 
@@ -20,6 +21,7 @@ server.register(inert, function (err) {
       method: 'POST',
       path: '/api/',
       handler: function (request, reply) {
+         console.log('post: ' + request.payload)
          Query.create(request.payload)
          reply();
        }
@@ -29,6 +31,7 @@ server.register(inert, function (err) {
       method: 'PUT',
       path: '/api/',
       handler: function (request, reply) {
+        console.log('put: ' + request.payload)
         Query.update(request.payload)
         reply();
        }
@@ -36,9 +39,10 @@ server.register(inert, function (err) {
 
   server.route({
       method: 'DELETE',
-      path: '/api/',
+      path: '/api/{id}',
       handler: function (request, reply) {
-        Query.delete(request.payload)
+        console.log('delete: ' + request.params.id)
+        Query.delete(request.params.id)
          reply();
        }
   })

@@ -1,15 +1,27 @@
+import { MongoClient } from 'mongodb'
 import uuid from 'node-uuid'
 
 let data = [
    {
      id: uuid.v1(),
-     title: 'Teste',
+     title: 'Comunicação rest',
      completed: false
+   },
+   {
+     id: uuid.v1(),
+     title: 'Configuração server',
+     completed: true
    }
 ]
+const url = 'mongodb://localhost:27017/'
 
 class Query
 {
+
+  getUrl()
+  {
+    return url;
+  }
 
   getAll()
   {
