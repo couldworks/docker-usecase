@@ -1,0 +1,13 @@
+gradle
+ldap
+ldapemail
+ssh-credentials
+ssh
+sonar
+sonargraph-plugin
+jira
+build-monitor-plugin
+dashboard-view
+
+
+
