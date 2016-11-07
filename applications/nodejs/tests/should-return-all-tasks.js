@@ -1,19 +1,19 @@
-import chai, { expect }  from 'chai'
+import chai, { expect } from 'chai'
 import chaiHttp from 'chai-http'
-import server from  '../src/index'
+import server from '../src/index'
 
 chai.use(chaiHttp)
 
 export default (done) =>
 {
-    chai.request(server.info.uri)
+  chai.request(server.info.uri)
       .get('/api/')
-      .end(function(err, res)
+      .end(function (err, res)
       {
-          expect(res).to.have.status(200)
-          expect(res).to.be.json
-          expect(res.body).to.have.length(1);
-          done()
+        expect(res).to.have.status(200)
+        expect(res).to.be.json
+        expect(res.body).to.have.length.least(0)
+        done()
       }
   )
 }

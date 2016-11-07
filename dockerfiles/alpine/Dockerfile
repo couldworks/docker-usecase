@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM alpine:3.4
+FROM alpine:edge
 
 # A few problems with compiling Java from source:
 #  1. Oracle.  Licensing prevents us from redistributing the official JDK.
@@ -13,4 +13,3 @@ FROM alpine:3.4
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
-

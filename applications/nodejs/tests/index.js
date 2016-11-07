@@ -7,20 +7,17 @@ import shouldUpdateTask from './should-update-task'
 import shouldDeleteTask from './should-delete-task'
 import shouldConnectToMongo from './should-connect-to-mongo'
 
-
-describe('Server', function() {
-  it('should listing port 3000', shouldListernerPort3000)
-    .timeout(3000)
+describe('Server', function () {
   it('should return http 200', shouldReturnHttp200)
   it('should return static file', shouldReturnStaticFile)
 })
 
-describe('Mongo', function() {
-  it('should connect to mongo db', shouldConnectToMongo)
+describe('Data Base', function () {
+  it('should connect to db', shouldConnectToMongo)
     .timeout(3000)
 })
 
-describe('WEB Api', function() {
+describe('WEB Api', function () {
   it('should return all tasks', shouldReturnAllTasks)
   it('should create new task', shouldCreateNewTask)
   it('should update task', shouldUpdateTask)

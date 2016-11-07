@@ -1,56 +1,89 @@
-import { MongoClient } from 'mongodb'
+import OrientDB from 'orientjs'
 import uuid from 'node-uuid'
 
 let data = [
-   {
-     id: uuid.v1(),
-     title: 'Comunicação rest',
-     completed: false
-   },
-   {
-     id: uuid.v1(),
-     title: 'Configuração server',
-     completed: true
-   }
+  {
+    id: uuid.v1(),
+    title: 'Comunicação rest',
+    completed: false
+  },
+  {
+    id: uuid.v1(),
+    title: 'Configuração server',
+    completed: true
+  }
 ]
-const url = 'mongodb://localhost:27017/'
 
 class Query
 {
 
-  getUrl()
-  {
-    return url;
+  _createConnection ()
+    {
+    return OrientDB({
+      host: 'localhost',
+      port: 2424,
+      username: 'root',
+      password: 'root'
+    })
   }
 
-  getAll()
-  {
-    return data;
+  _createSession () {
+    return this._createConnection().use({
+      name: 'todo',
+      username: 'root',
+      password: 'root'
+    })
   }
 
-  getActive()
+  getUrl ()
   {
-    return data;
+    return url
   }
 
-  getCompleted()
+  getAll ()
   {
-    return data;
+    return this._createSession().query('select * from task')
   }
 
-  update(task)
+  getById (id)
   {
-     data[0] = task;
+    return this._createSession().query('select * from task where id = :id', {
+      params: {id: id}
+    }
+   )
   }
 
-  create(task)
+  update (task)
   {
-    data.push(task)
+    return this._createSession().update(task['@rid'])
+           .set({
+             title: task.title,
+             completed: task.completed
+           }).one()
   }
 
-  delete(task)
+  create (task)
   {
-    data = []
+    let newTask = {
+      id: uuid.v1(),
+      title: task.title,
+      completed: task.completed }
+
+    return this._createSession()
+        .insert()
+        .into('task')
+        .set(newTask)
+        .one()
+  }
+
+  delete (task)
+  {
+    return this._createSession().delete().from('task')
+     .where('id ="' + task + '"').limit(1).scalar()
+  }
+
+  open () {
+    return this._createConnection()
   }
 }
 
