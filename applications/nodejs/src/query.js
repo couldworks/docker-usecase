@@ -14,15 +14,26 @@ let data = [
   }
 ]
 
-const connect = () => { return OrientDB({
-  host: 'localhost',
-  port: 2424,
-  username: 'root',
-  password: 'root'
-}) }
-
 class Query
 {
+
+  _createConnection ()
+    {
+    return OrientDB({
+      host: 'localhost',
+      port: 2424,
+      username: 'root',
+      password: 'root'
+    })
+  }
+
+  _createSession () {
+    return this._createConnection().use({
+      name: 'todo',
+      username: 'root',
+      password: 'root'
+    })
+  }
 
   getUrl ()
   {
@@ -31,45 +42,48 @@ class Query
 
   getAll ()
   {
-    let session = connect().use({
-      name: 'TODO',
-      username: 'root',
-      password: 'root'
-    })
+    return this._createSession().query('select * from task')
   }
 
-  getActive ()
+  getById (id)
   {
-    return data
-  }
-
-  getCompleted ()
-  {
-    return data
+    return this._createSession().query('select * from task where id = :id', {
+      params: {id: id}
+    }
+   )
   }
 
   update (task)
   {
-    return db.put('document', null, task)
+    return this._createSession().update(task['@rid'])
+           .set({
+             title: task.title,
+             completed: task.completed
+           }).one()
   }
 
   create (task)
   {
-    let session = connect().use({
-      name: 'TODO',
-      username: 'root',
-      password: 'root'
-    })
-    session.insert().into('task').set(task).one()
+    let newTask = {
+      id: uuid.v1(),
+      title: task.title,
+      completed: task.completed }
+
+    return this._createSession()
+        .insert()
+        .into('task')
+        .set(newTask)
+        .one()
   }
 
   delete (task)
   {
-    data = []
+    return this._createSession().delete().from('task')
+     .where('id ="' + task + '"').limit(1).scalar()
   }
 
   open () {
-    return connect()
+    return this._createConnection()
   }
 }
 

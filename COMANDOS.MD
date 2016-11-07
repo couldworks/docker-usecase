@@ -14,7 +14,7 @@
   - docker build -t couldworks/mongodb:3.2.4 .
 
 - Imagem orientDb
-  -docker run -d —-name orientdb -p 2424:2424 -p 2480:2480 -e ORIENTDB_ROOT_PASSWORD=root orientdb:latest
+  -docker run -d --name orientdb -p 2424:2424 -p 2480:2480 -e ORIENTDB_ROOT_PASSWORD=root orientdb:latest
 
 - criando uma rede docker
   - docker network create --driver bridge couldworks

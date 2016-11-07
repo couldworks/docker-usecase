@@ -16,7 +16,8 @@ export default (done) =>
       .end(function (err, res)
       {
         expect(res).to.have.status(200)
-        // expect(query.getAll()).to.have.length(2);
+        expect(res.body).to.not.be.null
+        expect(res.body).to.have.property('id')
         done()
       }
   )

@@ -1,21 +1,24 @@
-import chai, { expect }  from 'chai'
+import chai, { expect } from 'chai'
 import chaiHttp from 'chai-http'
-import server from  '../src/index'
+import server from '../src/index'
 import Query from '../src/query'
 
 chai.use(chaiHttp)
 
 export default (done) =>
 {
-  let task = Query.getAll()[0]
-
-  chai.request(server.info.uri)
-    .delete('/api/')
-    .send(task)
-    .end(function(err, res)
-    {
-        expect(res).to.have.status(200)
-        expect(Query.getAll()).to.have.length(0)
-        done()
+  Query.create({title: 'Removed Task', completed: true})
+    .then((task) => {
+      chai.request(server.info.uri)
+          .delete('/api/' + task.id)
+          .end(function (err, res)
+          {
+            expect(res).to.have.status(200)
+            Query.getById(task.id).then((tasks) => {
+              expect(tasks).to.have.length(0)
+              done()
+            })
+          })
     })
+    .error((err) => { done(err) })
 }

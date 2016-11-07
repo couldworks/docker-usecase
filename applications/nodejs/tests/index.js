@@ -8,8 +8,6 @@ import shouldDeleteTask from './should-delete-task'
 import shouldConnectToMongo from './should-connect-to-mongo'
 
 describe('Server', function () {
-  it('should listing port 3000', shouldListernerPort3000)
-    .timeout(3000)
   it('should return http 200', shouldReturnHttp200)
   it('should return static file', shouldReturnStaticFile)
 })
