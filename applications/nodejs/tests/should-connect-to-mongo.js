@@ -1,12 +1,15 @@
-import chai, { expect }  from 'chai'
-import { MongoClient } from 'mongodb'
+import chai, { expect } from 'chai'
+import orientdb from 'node-orientdb-http'
 import Query from '../src/query'
 
 export default (done) =>
 {
-  MongoClient.connect(Query.getUrl(), function(err, db) {
-    expect(err).to.be.null
-    db.close();
-});
-
+  let db = Query.open()
+  db.list()
+    .then(function (dbs) {
+      done()
+    })
+    .catch(function (err) {
+      done(err)
+    })
 }

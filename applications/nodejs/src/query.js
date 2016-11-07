@@ -1,56 +1,75 @@
-import { MongoClient } from 'mongodb'
+import OrientDB from 'orientjs'
 import uuid from 'node-uuid'
 
 let data = [
-   {
-     id: uuid.v1(),
-     title: 'Comunicação rest',
-     completed: false
-   },
-   {
-     id: uuid.v1(),
-     title: 'Configuração server',
-     completed: true
-   }
+  {
+    id: uuid.v1(),
+    title: 'Comunicação rest',
+    completed: false
+  },
+  {
+    id: uuid.v1(),
+    title: 'Configuração server',
+    completed: true
+  }
 ]
-const url = 'mongodb://localhost:27017/'
+
+const connect = () => { return OrientDB({
+  host: 'localhost',
+  port: 2424,
+  username: 'root',
+  password: 'root'
+}) }
 
 class Query
 {
 
-  getUrl()
+  getUrl ()
   {
-    return url;
+    return url
   }
 
-  getAll()
+  getAll ()
   {
-    return data;
+    let session = connect().use({
+      name: 'TODO',
+      username: 'root',
+      password: 'root'
+    })
   }
 
-  getActive()
+  getActive ()
   {
-    return data;
+    return data
   }
 
-  getCompleted()
+  getCompleted ()
   {
-    return data;
+    return data
   }
 
-  update(task)
+  update (task)
   {
-     data[0] = task;
+    return db.put('document', null, task)
   }
 
-  create(task)
+  create (task)
   {
-    data.push(task)
+    let session = connect().use({
+      name: 'TODO',
+      username: 'root',
+      password: 'root'
+    })
+    session.insert().into('task').set(task).one()
   }
 
-  delete(task)
+  delete (task)
   {
     data = []
+  }
+
+  open () {
+    return connect()
   }
 }
 

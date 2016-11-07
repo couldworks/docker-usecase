@@ -37,7 +37,8 @@
     "hapi": "^13.4.1",
     "inert": "^4.0.0",
     "lodash": "^4.13.1",
-    "mongodb": "^2.1.18"
+    "node-orientdb-http": "^0.1.1",
+    "orientjs": "^2.2.3"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
