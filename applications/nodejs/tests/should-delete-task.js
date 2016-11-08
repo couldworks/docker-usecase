@@ -2,6 +2,7 @@ import chai, { expect } from 'chai'
 import chaiHttp from 'chai-http'
 import server from '../src/index'
 import Query from '../src/query'
+import { url } from '../src/resources'
 
 chai.use(chaiHttp)
 
@@ -10,7 +11,7 @@ export default (done) =>
   Query.create({title: 'Removed Task', completed: true})
     .then((task) => {
       chai.request(server.info.uri)
-          .delete('/api/' + task.id)
+          .delete(url + task.id)
           .end(function (err, res)
           {
             expect(res).to.have.status(200)
