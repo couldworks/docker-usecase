@@ -2,13 +2,14 @@ import chai, { expect } from 'chai'
 import chaiHttp from 'chai-http'
 import server from '../src/index'
 import query from '../src/query'
+import { url } from '../src/resources'
 
 chai.use(chaiHttp)
 
 export default (done) =>
 {
   chai.request(server.info.uri)
-      .post('/api/')
+      .post(url)
       .send({
         title: 'Nova Tarefa',
         completed: false

@@ -2,6 +2,7 @@ import chai, { expect } from 'chai'
 import chaiHttp from 'chai-http'
 import server from '../src/index'
 import Query from '../src/query'
+import { url } from '../src/resources'
 
 chai.use(chaiHttp)
 
@@ -11,7 +12,7 @@ export default (done) =>
       .then((task) => {
         task.title = 'Tarefa Alterada'
         chai.request(server.info.uri)
-              .put('/api/')
+              .put(url)
               .send(task)
               .end((err, res) => {
                 expect(res).to.have.status(200)

@@ -1,6 +1,7 @@
 import Hapi from 'hapi'
 import inert from 'inert'
 import Query from './query'
+import { url } from './resources'
 
 const server = new Hapi.Server()
 
@@ -9,7 +10,7 @@ server.connection({ port: 3000, host: 'localhost' })
 server.register(inert, function (err) {
   server.route({
     method: 'GET',
-    path: '/api/{filter?}',
+    path: url + '{filter?}',
     handler: function (request, reply) {
       reply(Query.getAll())
     }
@@ -17,7 +18,7 @@ server.register(inert, function (err) {
 
   server.route({
     method: 'POST',
-    path: '/api/',
+    path: url,
     handler: function (request, reply) {
       let task = Query.create(request.payload)
                         .then((task) => { reply(task) })
@@ -27,7 +28,7 @@ server.register(inert, function (err) {
 
   server.route({
     method: 'PUT',
-    path: '/api/',
+    path: url,
     handler: function (request, reply) {
       Query.update(request.payload).then((task) => {
         reply(request.payload)
@@ -37,7 +38,7 @@ server.register(inert, function (err) {
 
   server.route({
     method: 'DELETE',
-    path: '/api/{id}',
+    path: url + '{id}',
     handler: function (request, reply) {
       Query.delete(request.params.id).then((value) => {
         reply()
